@@ -14,5 +14,7 @@ public class ProyectoFinal {
         System.out.println("Hello World!");
         
         System.out.println(" Grupo 2!");
+        
+        System.err.println("Prueba Mario");
     }
 }
