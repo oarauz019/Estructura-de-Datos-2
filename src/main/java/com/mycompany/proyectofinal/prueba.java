@@ -10,4 +10,9 @@ package com.mycompany.proyectofinal;
  */
 public class prueba {
     
+    
+    private String estiloMusical;
+    private int aniosCarrera;
+
+  
 }
