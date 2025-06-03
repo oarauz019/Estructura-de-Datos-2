@@ -11,4 +11,5 @@
         <maven.compiler.target>23</maven.compiler.target>
         <exec.mainClass>com.mycompany.proyectofinal.ProyectoFinal</exec.mainClass>
     </properties>
+    <name>Su Salud Virtual</name>
 </project>
