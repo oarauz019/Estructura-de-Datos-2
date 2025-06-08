@@ -11,10 +11,8 @@ package com.mycompany.proyectofinal;
 public class ProyectoFinal {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-        
-        System.out.println(" Grupo 2!");
-        
-        System.err.println("Prueba Mario");
+        MenuLogica MenuPrincipal = new MenuLogica();
+        MenuPrincipal.menu();
     }
+    
 }

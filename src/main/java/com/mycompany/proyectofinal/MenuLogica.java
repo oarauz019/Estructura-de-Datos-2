@@ -17,6 +17,7 @@ public class MenuLogica {
  * @author nahum
  */
     public void menu() {
+        GestionPacientes SubMenuGestionPacientes = new GestionPacientes();
         Scanner scanner = new Scanner(System.in);
         int opciones;
         System.out.println("¡Bienvenido al Hopital Metropolitano!");
@@ -30,9 +31,16 @@ public class MenuLogica {
             switch (opciones) {
                 case 1:
                     System.out.println("Opcion: Llegada de pacientes.");
+                    SubMenuGestionPacientes.SubMenuGestionPacientes();
                     break;
                 case 2:
                     System.out.println("Opcion: Ayuda.");
+                    System.err.println("***Avance 1 V 1.0.2***");
+                    System.err.println("Desarrollado por: ");
+                    System.err.println("-> Ramirez Fuentes Nahum Esteban");
+                    System.err.println("-> Lopez Lopez Alex Josue");
+                    System.err.println("-> Arauz Cerdas Oscar Arturo");
+                    System.err.println("-> Sandi Aguero Mario Andres");
                     break;
                 case 3:
                     System.out.println("Saliendo del programa. ¡Gracias por su visita!");
