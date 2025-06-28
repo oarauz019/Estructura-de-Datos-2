@@ -11,8 +11,8 @@ package com.mycompany.proyectofinal;
 public class ProyectoFinal {
 
     public static void main(String[] args) {
-        MenuLogica MenuPrincipal = new MenuLogica();
-        MenuPrincipal.menu();
+        MenuLogica menuPrincipal = new MenuLogica();
+        menuPrincipal.menu();
     }
     
 }

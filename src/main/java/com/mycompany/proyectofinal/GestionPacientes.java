@@ -11,7 +11,12 @@ import java.util.Scanner;
  * @author MarioSandi
  */
 public class GestionPacientes {
-    MenuLogica MenuPrincipal = new MenuLogica();
+    private MenuLogica MenuPrincipal = new MenuLogica();
+    private Cola c_Regular = new Cola();
+    private int conta_Regular = 1;
+    private Cola c_Prefe = new Cola();
+    private int conta_Prefe = 1;
+ 
 /**
  * Esta clase permite la llegada de pacientes al centro de salud
  * con diferentes opciones a elegir
@@ -55,7 +60,7 @@ public class GestionPacientes {
                     break;
 
                 case 4:
-                    System.out.println("Mostrando fichas pendientes...");
+                    mostrarFichasPendientes();
                     break;
 
                 case 5:
@@ -76,5 +81,13 @@ public class GestionPacientes {
         scanner.close();
     
     }
+     private void mostrarFichasPendientes() {
+        System.out.println("Fichas sin atender en la categoria preferencial: ---");
+        c_Prefe.imprimirCola();
+
+        System.out.println("Fichas sin atender en la categoria regular: ");
+        c_Regular.imprimirCola();
+    }   
+    
     
 }
