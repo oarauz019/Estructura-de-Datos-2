@@ -49,7 +49,7 @@ public class GestionPacientes {
 
             switch (opcion) {
                 case 1:
-                    System.out.print("Ingrese el ID de la ficha a seleccionar: ");
+                    escogerFichaPaciente(scanner);
                     break;
 
                 case 2:
@@ -105,11 +105,11 @@ public class GestionPacientes {
 
         if (categoria == 1){
             ficha = "P" + conta_Prefe++;
-            Paciente paciente = new Paciente(fecha, nombre, categoria, ficha);
+            Paciente paciente = new Paciente(fecha, nombre, cedula, ficha);
             c_Prefe.encolar(paciente);
         } else if (categoria == 2) {
             ficha = "R" + conta_Regular++;
-            Paciente paciente = new Paciente(fecha, nombre, categoria, ficha);
+            Paciente paciente = new Paciente(fecha, nombre, cedula, ficha);
             c_Regular.encolar(paciente);
         } else {
             System.out.println("Categoria de ficha no válida.");
