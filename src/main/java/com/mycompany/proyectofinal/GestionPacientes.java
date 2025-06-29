@@ -69,8 +69,8 @@ public class GestionPacientes {
                     break;
 
                 case 6:
-                    MenuPrincipal.menu();
-                    break;
+                    System.out.println("Volviendo al menu principal del programa...");
+                    return;
 
                 default:
                     System.out.println("Opción no válida. Intente nuevamente.");
