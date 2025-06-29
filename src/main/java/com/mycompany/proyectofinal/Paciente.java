@@ -11,18 +11,18 @@ import java.text.SimpleDateFormat;
  * @author nahum
  */
 public class Paciente {
-    Date f_h;
+    private Date f_h;
     private String nombre;
-    private int cedula;
-    private int ficha;
+    private String cedula;
+    private String ficha;
 
-    public Paciente(Date f_h, int cedula, String nombre, int fecha) {
+    public Paciente(Date f_h, String nombre, String cedula, String ficha) {
         this.f_h = f_h;
-        this.cedula = cedula;
         this.nombre = nombre;
+        this.cedula = cedula;
         this.ficha = ficha;
     }
-
+   
     public Date getF_h() {
         return f_h;
     }
@@ -39,7 +39,7 @@ public class Paciente {
         this.nombre = nombre;
     }
 
-    public int getCedula() {
+    public String getCedula() {
         return cedula;
     }
 
@@ -47,17 +47,23 @@ public class Paciente {
         this.cedula = cedula;
     }
 
-    public int getFicha() {
+    public String getFicha() {
         return ficha;
     }
 
     public void setFicha() {
         this.ficha = ficha;
     }
-      
+
+/**
+     * Representacion de texto de objeto paciente
+     * Los parametros de la clase paciente son incluidos en el texto
+     * @Autor: Nahum Ramirez
+*/     
+    
     @Override
     public String toString(){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("Month/Day/Year Hour:Minutes:Seconds");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
         return "Dia y hora de llegada: " + simpleDateFormat.format(f_h) + "Nombre: " + nombre + "Cedula: " + cedula + "Numero de ficha: " + ficha; 
     }
     
