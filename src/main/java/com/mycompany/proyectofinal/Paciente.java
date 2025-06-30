@@ -10,51 +10,31 @@ import java.text.SimpleDateFormat;
  *
  * @author nahum
  */
-public class Paciente {
+public class Paciente extends Usuario{
     private Date f_h;
-    private String nombre;
-    private String cedula;
     private String ficha;
 
-    public Paciente(Date f_h, String nombre, String cedula, String ficha) {
+    public Paciente(Date f_h, String ficha, String nombre, String cedula) {
+        super(nombre, cedula);
         this.f_h = f_h;
-        this.nombre = nombre;
-        this.cedula = cedula;
         this.ficha = ficha;
     }
-   
+
     public Date getF_h() {
         return f_h;
     }
 
-    public void setF_h() {
+    public void setF_h(Date f_h) {
         this.f_h = f_h;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre() {
-        this.nombre = nombre;
-    }
-
-    public String getCedula() {
-        return cedula;
-    }
-
-    public void setCedula() {
-        this.cedula = cedula;
     }
 
     public String getFicha() {
         return ficha;
     }
 
-    public void setFicha() {
+    public void setFicha(String ficha) {
         this.ficha = ficha;
-    }
-
+    }  
 /**
      * Representacion de texto de objeto paciente
      * Los parametros de la clase paciente son incluidos en el texto
@@ -64,7 +44,6 @@ public class Paciente {
     @Override
     public String toString(){
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
-        return "Dia y hora de llegada: " + simpleDateFormat.format(f_h) + "Nombre: " + nombre + "Cedula: " + cedula + "Numero de ficha: " + ficha; 
-    }
-    
+        return "Numero de ficha: " + ficha + " Nombre: " + nombre + " Cedula: " + cedula + " Dia y hora de llegada: " + simpleDateFormat.format(f_h); 
+    }  
 }

@@ -14,11 +14,12 @@ public class MenuLogica {
 /**
  * Esta clase permite gestionar la logica del menu y su navegacion para poder utilzar las opciones solicitadas
  * para que el usuario pueda selecionar las opciones apropiadas para moverse por el sistema y ser atendido
- * @author nahum
+ * @author Nahum Ramirez
  */
     public void menu() {
         GestionPacientes SubMenuGestionPacientes = new GestionPacientes();
         Scanner scanner = new Scanner(System.in);
+        
         int opciones;
         System.out.println("¡Bienvenido al Hopital Metropolitano!");
         do {

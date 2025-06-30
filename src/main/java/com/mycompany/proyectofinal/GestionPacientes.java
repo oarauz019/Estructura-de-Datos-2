@@ -13,10 +13,12 @@ import java.util.Date;
  */
 public class GestionPacientes {
     private MenuLogica MenuPrincipal = new MenuLogica();
+    private QuejasPila pilaQuejas = new QuejasPila();
     private Cola c_Regular = new Cola(); // Cola pacientes regulares
     private int conta_Regular = 1; // Contador de pacientes regulares
     private Cola c_Prefe = new Cola(); // Cola pacientes preferenciles
     private int conta_Prefe = 1; // Contador pacientes preferenciales
+    private int pref_Contador = 0;
  
 /**
  * Esta clase permite la llegada de pacientes al centro de salud
@@ -24,8 +26,7 @@ public class GestionPacientes {
  * @author MarioSandi
  */    
     protected void SubMenuGestionPacientes(){
-        
-        
+ 
          Scanner scanner = new Scanner(System.in);
         int opcion;
 
@@ -53,11 +54,11 @@ public class GestionPacientes {
                     break;
 
                 case 2:
-                    System.out.print("Ingrese el nombre del paciente a atender: ");
+                    atencionDePacientes();
                     break;
 
                 case 3:
-                    System.out.print("Ingrese el nombre del paciente que desea abandonar la cola: ");
+                    abandonarCola(scanner);
                     break;
 
                 case 4:
@@ -65,7 +66,7 @@ public class GestionPacientes {
                     break;
 
                 case 5:
-                    System.out.println("Mostrando quejas recibidas...");
+                    quejasRecibidas();
                     break;
 
                 case 6:
@@ -94,9 +95,7 @@ public class GestionPacientes {
         scanner.nextLine();
 
         System.out.print("Ingrese número de cédula: ");
-        String cedula = scanner.nextLine();
-        scanner.nextLine();
-        
+        String cedula = scanner.nextLine();     
         System.out.print("Ingrese nombre completo del paciente: ");
         String nombre = scanner.nextLine();
 
@@ -105,11 +104,11 @@ public class GestionPacientes {
 
         if (categoria == 1){
             ficha = "P" + conta_Prefe++;
-            Paciente paciente = new Paciente(fecha, nombre, cedula, ficha);
+            Paciente paciente = new Paciente(fecha, ficha, nombre, cedula);
             c_Prefe.encolar(paciente);
         } else if (categoria == 2) {
             ficha = "R" + conta_Regular++;
-            Paciente paciente = new Paciente(fecha, nombre, cedula, ficha);
+            Paciente paciente = new Paciente(fecha, ficha, nombre, cedula);
             c_Regular.encolar(paciente);
         } else {
             System.out.println("Categoria de ficha no válida.");
@@ -119,15 +118,95 @@ public class GestionPacientes {
         System.out.println("Su número de ficha es la: " + ficha);
     }
 /**
+     * En este metodo se va a utilizar para poder atender los pacientes en cola atendiendo 2 pref mas 1 regular
+     * El systema ficha mas cedula para saber quien sera atendido y al final si existen usuarios en cola
+     * @Autor: Nahum Ramirez
+*/    
+    private void atencionDePacientes(){
+        Paciente atendido = null;
+                
+        if (!c_Prefe.estaVacia() && pref_Contador < 2){
+            atendido = c_Prefe.desencolar();
+            pref_Contador++;
+        }else if (!c_Regular.estaVacia()){
+            atendido = c_Regular.desencolar();
+            pref_Contador = 0;
+        }
+        
+        if (atendido != null){
+            System.out.println("Numero de ficha: " + atendido.getFicha() + " Numero de cedula: " + atendido.getCedula());
+        }else{
+            System.out.println("Todos los pacientes fueron atendidos, no hay pacientes por atender");
+        }
+    }
+    
+    
+/**
      * Metodo que nos permite mostrar la ficha de los pacientes
      * Nos muestra las fichas sin atender
      * @Autor: Nahum Ramirez
 */    
-     private void mostrarFichasPendientes() {
-        System.out.println("Fichas sin atender en la categoria regular: ");
+    private void mostrarFichasPendientes() {
+        System.out.println("[Paciente Regular] Fichas sin atender en la categoria regular: ");
         c_Regular.imprimirCola();
         
-        System.out.println("Fichas sin atender en la categoria preferencial: ");
+        System.out.println("Paciente Preferencial] Fichas sin atender en la categoria preferencial: ");
         c_Prefe.imprimirCola();
-    }   
+    }
+/**
+     * Metodo que va a permitir abandonar la cola con el ingreso del numero de ficha.
+     * Da un mensaje indicando numero de ficha con la cedula correspondiente
+     * @Autor: Nahum Ramirez
+*/
+    private void abandonarCola(Scanner scanner) {
+        System.out.print("Indique el número de ficha: ");
+        String ficha = scanner.nextLine();
+
+        Paciente abandonandoCola = eliminarDeCola(c_Prefe, ficha);
+        if (abandonandoCola == null) {
+            abandonandoCola = eliminarDeCola(c_Regular, ficha);
+        }
+
+        if (abandonandoCola != null) {
+            System.out.println("Ficha #" + abandonandoCola.getFicha() + " con cédula " + abandonandoCola.getCedula() + " abandona la cola sin ser atendid@.");
+
+            Queja queja = new Queja(new Date(), "Saliendo de la cola", abandonandoCola.getNombre(), abandonandoCola.getCedula());
+            pilaQuejas.apilar(queja);
+        } else {
+            System.out.println("Ficha no localizada.");
+        }
+    }
+/**
+     * Meotodo donde en la cola de Pacientes se buscara y eliminara el paciente de la cola al igual que la ficha
+     * Este trabaja en conjunto con "abandonarCola"
+     * @Autor: Nahum Ramirez
+*/
+    
+    private Paciente eliminarDeCola(Cola cola, String numeroDeFicha) {
+        Cola temp = new Cola();
+        Paciente localizado = null;
+
+        while (!cola.estaVacia()) {
+            Paciente p = cola.desencolar();
+            if (p.getFicha().equalsIgnoreCase(numeroDeFicha)) {
+                localizado = p;
+            } else {
+                temp.encolar(p);
+            }
+        }
+        while (!temp.estaVacia()) {
+            cola.encolar(temp.desencolar());
+        }
+        return localizado;
+    }
+    
+    private void quejasRecibidas(){
+        System.out.println("Quejas en el sistema");
+        if (pilaQuejas.estaVacia()){
+            System.out.println("No hay quejas");
+        }else{
+            pilaQuejas.mostrarPila();
+        }
+    }  
 }
+
