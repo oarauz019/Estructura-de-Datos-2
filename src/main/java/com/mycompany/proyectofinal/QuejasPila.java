@@ -6,7 +6,7 @@ package com.mycompany.proyectofinal;
 
 /**
  *
- * @author MarioSandi
+ * @author Arauz Arturo
  */
 public class QuejasPila {
     private NodoP cima;

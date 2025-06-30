@@ -156,7 +156,7 @@ public class GestionPacientes {
 /**
      * Metodo que va a permitir abandonar la cola con el ingreso del numero de ficha.
      * Da un mensaje indicando numero de ficha con la cedula correspondiente
-     * @Autor: Nahum Ramirez
+     * @Autor: Lopez Alex
 */
     private void abandonarCola(Scanner scanner) {
         System.out.print("Indique el numero de ficha: ");
