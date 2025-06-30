@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author nahum
+ * @author Nahum Ramirez
  */
 public class MenuLogica {
 /**
@@ -21,13 +21,13 @@ public class MenuLogica {
         Scanner scanner = new Scanner(System.in);
         
         int opciones;
-        System.out.println("¡Bienvenido al Hopital Metropolitano!");
+        System.out.println("Bienvenido al Hopital Metropolitano");
         do {
-            System.out.println("\nMenú Principal:");
+            System.out.println("\nMenu Principal:");
             System.out.println("1. Gestionar Llegada de Pacientes");
             System.out.println("2. Ayuda");
             System.out.println("3. Salir");
-            System.out.print("Seleccione una opción: ");
+            System.out.print("Seleccione una opcion: ");
             opciones = scanner.nextInt();
             switch (opciones) {
                 case 1:

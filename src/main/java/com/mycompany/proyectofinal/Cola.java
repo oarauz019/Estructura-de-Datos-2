@@ -6,7 +6,7 @@ package com.mycompany.proyectofinal;
 
 /**
  *
- * @author nahum
+ * @author LopezAlex
  */
 public class Cola {
     private Nodo frente;

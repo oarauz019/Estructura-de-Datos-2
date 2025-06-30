@@ -7,7 +7,7 @@ import java.util.Date;
 
 /**
  *
- * @author nahum
+ * @author LopezAlex
  */
 public class Queja extends Usuario{
     private Date fecha;

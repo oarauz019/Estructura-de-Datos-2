@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 
 /**
  *
- * @author nahum
+ * @author ArauzArturo
  */
 public class Paciente extends Usuario{
     private Date f_h;
@@ -38,7 +38,7 @@ public class Paciente extends Usuario{
 /**
      * Representacion de texto de objeto paciente
      * Los parametros de la clase paciente son incluidos en el texto
-     * @Autor: Nahum Ramirez
+     * @Autor: Arauz Arturo
 */     
     
     @Override

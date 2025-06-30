@@ -6,7 +6,7 @@ package com.mycompany.proyectofinal;
 
 /**
  *
- * @author oarau
+ * @author ArazuLopez
  */
 public class ProyectoFinal {
 
