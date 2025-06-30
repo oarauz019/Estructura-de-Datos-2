@@ -1,0 +1,62 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "Usuarios" {
+  class Usuario {
+    -nombre: String
+    -cedula: String
+    +getNombre(): String
+    +getCedula(): String
+  }
+
+  class Paciente extends Usuario {
+    -f_h: Date
+    -ficha: String
+    +getFicha(): String
+  }
+
+  class Queja extends Usuario {
+    -fecha: Date
+    -comentario: String
+    +getComentario(): String
+  }
+
+  Usuario <|-- Paciente
+  Usuario <|-- Queja
+}
+
+package "Estructura de Cola" {
+  class Cola {
+    -frente: Nodo
+    -ultimo: Nodo
+    +encolar(p: Paciente)
+    +desencolar(): Paciente
+  }
+
+  class Nodo {
+    -dato: Paciente
+    -siguiente: Nodo
+  }
+
+  Cola --> Nodo
+  Cola --> Paciente
+  Nodo --> Paciente
+}
+
+package "Estructura de Pila" {
+  class QuejasPila {
+    -cima: NodoP
+    +apilar(q: Queja)
+    +desapilar(): Queja
+  }
+
+  class NodoP {
+    -dato: Queja
+    -siguiente: NodoP
+  }
+
+  QuejasPila --> NodoP
+  NodoP --> Queja
+}
+@enduml
