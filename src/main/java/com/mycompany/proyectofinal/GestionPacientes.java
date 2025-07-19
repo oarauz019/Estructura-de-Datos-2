@@ -6,28 +6,45 @@ package com.mycompany.proyectofinal;
 
 import java.util.Scanner;
 import java.util.Date;
+import java.text.SimpleDateFormat;
 
 /**
- * 
+ * Esta clase gestiona la llegada, atención y salida de pacientes del centro de salud.
+ * Utiliza colas para pacientes regulares y preferenciales, una pila para las quejas,
+ * una lista doble circular para expedientes y una lista simple para la bitácora de citas del día.
  * @author MarioSandi
  */
 public class GestionPacientes {
-    private MenuLogica MenuPrincipal = new MenuLogica();
+    // Constante para el número de pacientes preferenciales a atender antes de uno regular.
+    private static final int MAX_PREF_ATENDIDOS = 2;
+
+    // Instancia de la pila para almacenar quejas.
     private QuejasPila pilaQuejas = new QuejasPila();
-    private Cola c_Regular = new Cola(); // Cola pacientes regulares
-    private int conta_Regular = 1; // Contador de pacientes regulares
-    private Cola c_Prefe = new Cola(); // Cola pacientes preferenciles
-    private int conta_Prefe = 1; // Contador pacientes preferenciales
+    // Cola para pacientes regulares.
+    private Cola c_Regular = new Cola();
+    // Contador para asignar fichas a pacientes regulares.
+    private int conta_Regular = 1;
+    // Cola para pacientes preferenciales.
+    private Cola c_Prefe = new Cola();
+    // Contador para asignar fichas a pacientes preferenciales.
+    private int conta_Prefe = 1;
+    // Contador de pacientes preferenciales atendidos consecutivamente.
     private int pref_Contador = 0;
- 
-/**
- * Esta clase permite la llegada de pacientes al centro de salud
- * con diferentes opciones a elegir
- * @author MarioSandi
- */    
-    protected void SubMenuGestionPacientes(){
- 
-         Scanner scanner = new Scanner(System.in);
+
+    // Nueva lista para el expediente único de pacientes (Lista Doble Circular).
+    private ListaDobleCircularExpedientes expedientes = new ListaDobleCircularExpedientes();
+    // Nueva lista para la bitácora de citas del día (Lista Simple).
+    private ListaSimpleBitacoraCitas bitacoraCitasDia = new ListaSimpleBitacoraCitas();
+
+
+    /**
+     * Muestra el submenú de atención de pacientes y gestiona las opciones del usuario.
+     * Este método contiene el bucle principal para la interacción con el usuario
+     * en la sección de gestión de pacientes.
+     * @author MarioSandi
+     */
+    protected void SubMenuGestionPacientes() {
+        Scanner scanner = new Scanner(System.in);
         int opcion;
 
         do {
@@ -37,179 +54,375 @@ public class GestionPacientes {
             System.out.println("3. Abandonar Cola de Pacientes");
             System.out.println("4. Mostrar Fichas Pendientes");
             System.out.println("5. Mostrar Quejas Recibidas");
-            System.out.println("6. Regresar");
+            System.out.println("6. Regresar al Menu Principal");
             System.out.print("Seleccione una opcion: ");
 
+            // Valida que la entrada sea un número entero.
             while (!scanner.hasNextInt()) {
-                System.out.println("Por favor, ingrese un numero valido.");
-                scanner.next(); // descarta entrada no numérica
+                System.out.println("Entrada invalida. Por favor, ingrese un numero.");
+                scanner.next(); // Descarta la entrada no numérica.
+                System.out.print("Seleccione una opcion: ");
             }
 
             opcion = scanner.nextInt();
-            scanner.nextLine(); // limpiar el buffer
+            scanner.nextLine(); // Limpiar el buffer después de leer el entero.
 
             switch (opcion) {
                 case 1:
                     escogerFichaPaciente(scanner);
                     break;
-
                 case 2:
-                    atencionDePacientes();
+                    atencionDePacientes(scanner); // Se pasa el scanner para la nueva funcionalidad
                     break;
-
                 case 3:
                     abandonarCola(scanner);
                     break;
-
                 case 4:
                     mostrarFichasPendientes();
                     break;
-
                 case 5:
                     quejasRecibidas();
                     break;
-
                 case 6:
                     System.out.println("Volviendo al menu principal del programa...");
-                    return;
-
+                    break; // Sale del bucle do-while.
                 default:
-                    System.out.println("Opcion no valida. Intente nuevamente.");
+                    System.out.println("Opcion no valida. Por favor, intente nuevamente.");
                     break;
             }
-
-        } while (opcion != 6);  
+        } while (opcion != 6);
     }
-/**
-     * En este metodo se le va a solicar al usuario los datos del paciente y para de esta manera poder delegar una ficha según la categoria del mismo
-     * Finalmente el sistema segun lo indicado se va a colocar al paciente en la cola correspondiente.
-     * @Autor: Nahum Ramirez
-*/
+
+    /**
+     * Solicita al usuario los datos del paciente y le asigna una ficha según la categoría.
+     * El paciente es encolado en la cola correspondiente (preferencial o regular).
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @author Nahum Ramirez
+     */
     private void escogerFichaPaciente(Scanner scanner) {
-        System.out.println("Escoge la categoria apropiada de ficha: ");
+        System.out.println("\n--- Seleccion de Ficha ---");
+        System.out.println("Escoja la categoria apropiada de ficha:");
         System.out.println("1. Paciente Preferencial");
         System.out.println("2. Paciente Regular");
         System.out.print("Categoria: ");
 
-        int categoria = scanner.nextInt();
-        scanner.nextLine();
+        int categoria;
+        // Valida que la entrada de categoría sea un número entero.
+        while (!scanner.hasNextInt()) {
+            System.out.println("Entrada invalida. Por favor, ingrese 1 o 2.");
+            scanner.next(); // Descarta la entrada no numérica.
+            System.out.print("Categoria: ");
+        }
+        categoria = scanner.nextInt();
+        scanner.nextLine(); // Limpiar el buffer.
 
         System.out.print("Ingrese numero de cedula: ");
-        String cedula = scanner.nextLine();     
+        String cedula = scanner.nextLine();
         System.out.print("Ingrese nombre completo del paciente: ");
         String nombre = scanner.nextLine();
 
-        Date fecha = new Date();
-        String ficha;
+        Date fechaLlegada = new Date(); // Obtiene la fecha y hora actual.
+        String fichaAsignada;
+        Paciente nuevoPaciente;
 
-        if (categoria == 1){
-            ficha = "P" + conta_Prefe++;
-            Paciente paciente = new Paciente(fecha, ficha, nombre, cedula);
-            c_Prefe.encolar(paciente);
+        if (categoria == 1) {
+            fichaAsignada = "P" + conta_Prefe++; // Asigna ficha preferencial.
+            nuevoPaciente = new Paciente(fechaLlegada, fichaAsignada, nombre, cedula);
+            c_Prefe.encolar(nuevoPaciente);
+            System.out.println("Paciente preferencial encolado.");
         } else if (categoria == 2) {
-            ficha = "R" + conta_Regular++;
-            Paciente paciente = new Paciente(fecha, ficha, nombre, cedula);
-            c_Regular.encolar(paciente);
+            fichaAsignada = "R" + conta_Regular++; // Asigna ficha regular.
+            nuevoPaciente = new Paciente(fechaLlegada, fichaAsignada, nombre, cedula);
+            c_Regular.encolar(nuevoPaciente);
+            System.out.println("Paciente regular encolado.");
         } else {
-            System.out.println("Categoria de ficha no valida.");
-            return;
+            System.out.println("Categoria de ficha no valida. El paciente no fue encolado.");
+            return; // Sale del método si la categoría no es válida.
         }
 
-        System.out.println("Su numero de ficha es la: " + ficha);
+        System.out.println("Su numero de ficha es: " + fichaAsignada);
+        System.out.println("Gracias por su paciencia!");
     }
-/**
-     * En este metodo se va a utilizar para poder atender los pacientes en cola atendiendo 2 pref mas 1 regular
-     * El systema ficha mas cedula para saber quien sera atendido y al final si existen usuarios en cola
-     * @Autor: Lopez Alex
-*/    
-    private void atencionDePacientes(){
-        Paciente atendido = null;
-                
-        if (!c_Prefe.estaVacia() && pref_Contador < 2){
-            atendido = c_Prefe.desencolar();
+
+    /**
+     * Atiende a los pacientes siguiendo la lógica de 2 preferenciales por 1 regular.
+     * Si no hay pacientes en ninguna cola, se informa al usuario.
+     * Además, gestiona la creación/actualización del expediente del paciente
+     * y la bitácora de citas del día.
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @author Lopez Alex
+     */
+    private void atencionDePacientes(Scanner scanner) {
+        Paciente pacienteAtendido = null;
+        Date fechaAtencion = new Date(); // Momento en que el paciente es atendido.
+
+        System.out.println("\n--- Atencion de Pacientes ---");
+
+        // Lógica de atención: 2 preferenciales, luego 1 regular.
+        if (!c_Prefe.estaVacia() && pref_Contador < MAX_PREF_ATENDIDOS) {
+            pacienteAtendido = c_Prefe.desencolar();
             pref_Contador++;
-        }else if (!c_Regular.estaVacia()){
-            atendido = c_Regular.desencolar();
-            pref_Contador = 0;
+            System.out.println("Atendiendo paciente preferencial.");
+        } else if (!c_Regular.estaVacia()) {
+            pacienteAtendido = c_Regular.desencolar();
+            pref_Contador = 0; // Reinicia el contador de preferenciales después de atender un regular.
+            System.out.println("Atendiendo paciente regular.");
+        } else if (!c_Prefe.estaVacia()) { // Si no hay regulares y aún quedan preferenciales (y ya se atendieron 2)
+            pacienteAtendido = c_Prefe.desencolar();
+            pref_Contador++;
+            System.out.println("Atendiendo paciente preferencial (sin regulares disponibles).");
         }
-        
-        if (atendido != null){
-            System.out.println("Numero de ficha: " + atendido.getFicha() + " Numero de cedula: " + atendido.getCedula());
-        }else{
-            System.out.println("Todos los pacientes fueron atendidos, no hay pacientes por atender");
+
+        if (pacienteAtendido != null) {
+            System.out.println("\nDatos del paciente a atender:");
+            System.out.println(pacienteAtendido);
+
+            Expediente expedienteActual = expedientes.buscarPorCedula(pacienteAtendido.getCedula());
+
+            // Si el paciente no tiene expediente, es su primera vez.
+            if (expedienteActual == null) {
+                System.out.println("Paciente " + pacienteAtendido.getNombre() + " asiste a consulta por primera vez.");
+                int edad;
+                String genero;
+
+                System.out.print("Ingrese la edad del paciente: ");
+                while (!scanner.hasNextInt()) {
+                    System.out.println("Entrada invalida. Por favor, ingrese un numero para la edad.");
+                    scanner.next();
+                    System.out.print("Ingrese la edad del paciente: ");
+                }
+                edad = scanner.nextInt();
+                scanner.nextLine(); // Limpiar buffer
+
+                System.out.print("Ingrese el genero del paciente (Ej. Masculino, Femenino, Otro): ");
+                genero = scanner.nextLine();
+
+                expedienteActual = new Expediente(pacienteAtendido.getNombre(), pacienteAtendido.getCedula(), edad, genero);
+                expedientes.insertarOrdenado(expedienteActual); // Insertar el nuevo expediente ordenado por cédula.
+                System.out.println("Expediente creado para " + pacienteAtendido.getNombre() + ".");
+            } else {
+                // Si el paciente ya tiene expediente, mostrar sus datos.
+                System.out.println("\nDatos del expediente existente:");
+                System.out.println(expedienteActual);
+            }
+
+            // Solicitar datos de la cita actual
+            System.out.print("\nIngrese el nombre del doctor que atiende: ");
+            String nombreDoctor = scanner.nextLine();
+            System.out.print("Ingrese el diagnostico (texto abierto): ");
+            String diagnostico = scanner.nextLine();
+
+            // Crear y añadir la cita al historial del expediente
+            Cita nuevaCita = new Cita(fechaAtencion, nombreDoctor, diagnostico);
+            expedienteActual.getHistoricoCitas().insertar(nuevaCita);
+            System.out.println("Cita registrada en el historial del paciente.");
+
+            // Solicitar y añadir medicamentos prescritos
+            System.out.println("Ingrese los medicamentos prescritos (escriba 'fin' para terminar):");
+            String medicamentoInput;
+            do {
+                System.out.print("Medicamento: ");
+                medicamentoInput = scanner.nextLine();
+                if (!medicamentoInput.equalsIgnoreCase("fin") && !medicamentoInput.trim().isEmpty()) {
+                    MedicamentoPrescrito nuevoMedicamento = new MedicamentoPrescrito(fechaAtencion, medicamentoInput);
+                    expedienteActual.getHistoricoMedicamentos().insertar(nuevoMedicamento);
+                    System.out.println("Medicamento '" + medicamentoInput + "' registrado.");
+                }
+            } while (!medicamentoInput.equalsIgnoreCase("fin"));
+
+            // Alimentar la bitácora de citas del día
+            long tiempoEsperaMillis = fechaAtencion.getTime() - pacienteAtendido.getF_h().getTime();
+            long tiempoEsperaSegundos = tiempoEsperaMillis / 1000;
+
+            BitacoraCitaDia bitacoraEntry = new BitacoraCitaDia(
+                pacienteAtendido.getFicha(),
+                pacienteAtendido.getF_h(),
+                fechaAtencion,
+                pacienteAtendido.getCedula(),
+                pacienteAtendido.getNombre(),
+                tiempoEsperaSegundos
+            );
+            bitacoraCitasDia.insertarOrdenado(bitacoraEntry); // Insertar en la bitácora ordenada por cédula.
+            System.out.println("Cita anadida a la bitacora del dia.");
+
+            System.out.println("\nPaciente " + pacienteAtendido.getNombre() + ", su cita ha concluido.");
+
+        } else {
+            System.out.println("Todos los pacientes fueron atendidos, no hay pacientes por atender.");
         }
     }
-    
-    
-/**
-     * Metodo que nos permite mostrar la ficha de los pacientes
-     * Nos muestra las fichas sin atender
-     * @Autor: Arauz Arturo
-*/    
+
+    /**
+     * Muestra las fichas pendientes en ambas colas (regular y preferencial).
+     * @author Arauz Arturo
+     */
     private void mostrarFichasPendientes() {
-        System.out.println("[Paciente Regular] Fichas sin atender en la categoria regular: ");
+        System.out.println("\n--- Fichas Pendientes ---");
+        System.out.println("Fichas sin atender en la categoria REGULAR:");
         c_Regular.imprimirCola();
-        
-        System.out.println("[Paciente Preferencial] Fichas sin atender en la categoria preferencial: ");
+
+        System.out.println("\nFichas sin atender en la categoria PREFERENCIAL:");
         c_Prefe.imprimirCola();
     }
-/**
-     * Metodo que va a permitir abandonar la cola con el ingreso del numero de ficha.
-     * Da un mensaje indicando numero de ficha con la cedula correspondiente
-     * @Autor: Lopez Alex
-*/
-    private void abandonarCola(Scanner scanner) {
-        System.out.print("Indique el numero de ficha: ");
-        String ficha = scanner.nextLine();
 
-        Paciente abandonandoCola = eliminarDeCola(c_Prefe, ficha);
-        if (abandonandoCola == null) {
-            abandonandoCola = eliminarDeCola(c_Regular, ficha);
+    /**
+     * Permite a un paciente abandonar la cola ingresando su número de ficha.
+     * Si el paciente es encontrado y eliminado, se registra una queja.
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @author Lopez Alex
+     */
+    private void abandonarCola(Scanner scanner) {
+        System.out.println("\n--- Abandonar Cola ---");
+        System.out.print("Indique el numero de ficha para abandonar la cola: ");
+        String fichaABuscar = scanner.nextLine();
+
+        Paciente pacienteAbandonando = null;
+
+        // Intenta eliminar de la cola preferencial.
+        pacienteAbandonando = eliminarDeCola(c_Prefe, fichaABuscar);
+        if (pacienteAbandonando == null) {
+            // Si no se encuentra en la preferencial, intenta en la regular.
+            pacienteAbandonando = eliminarDeCola(c_Regular, fichaABuscar);
         }
 
-        if (abandonandoCola != null) {
-            System.out.println("Ficha #" + abandonandoCola.getFicha() + " con cedula " + abandonandoCola.getCedula() + " abandona la cola sin ser atendid@.");
+        if (pacienteAbandonando != null) {
+            System.out.println("Ficha #" + pacienteAbandonando.getFicha() + " con cedula " + pacienteAbandonando.getCedula() + " ha abandonado la cola sin ser atendido/a.");
 
-            Queja queja = new Queja(new Date(), "Saliendo de la cola", abandonandoCola.getNombre(), abandonandoCola.getCedula());
+            // Registra una queja por el abandono de la cola.
+            Queja queja = new Queja(new Date(), "Paciente abandono la cola sin ser atendido.", pacienteAbandonando.getNombre(), pacienteAbandonando.getCedula());
             pilaQuejas.apilar(queja);
+            System.out.println("Se ha registrado una queja por el abandono.");
         } else {
-            System.out.println("Ficha no localizada.");
+            System.out.println("Ficha no localizada en ninguna de las colas. Por favor, verifique el numero.");
         }
     }
-/**
-     * Meotodo donde en la cola de Pacientes se buscara y eliminara el paciente de la cola al igual que la ficha
-     * Este trabaja en conjunto con "abandonarCola"
-     * @Autor: Lopez Alex
-*/
-    
-    private Paciente eliminarDeCola(Cola cola, String numeroDeFicha) {
-        Cola temp = new Cola();
-        Paciente localizado = null;
 
+    /**
+     * Busca y elimina un paciente de una cola específica basándose en su número de ficha.
+     * Este método se utiliza internamente por 'abandonarCola'.
+     * @param cola La cola de la cual se intentará eliminar el paciente.
+     * @param numeroDeFicha El número de ficha del paciente a eliminar.
+     * @return El objeto Paciente eliminado, o null si no se encontró.
+     * @author Lopez Alex
+     */
+    private Paciente eliminarDeCola(Cola cola, String numeroDeFicha) {
+        Cola colaTemporal = new Cola(); // Cola temporal para mover los pacientes no coincidentes.
+        Paciente pacienteEncontrado = null;
+
+        // Recorre la cola original.
         while (!cola.estaVacia()) {
             Paciente p = cola.desencolar();
             if (p.getFicha().equalsIgnoreCase(numeroDeFicha)) {
-                localizado = p;
+                pacienteEncontrado = p; // Si encuentra el paciente, lo guarda.
             } else {
-                temp.encolar(p);
+                colaTemporal.encolar(p); // Si no es el paciente buscado, lo encola en la cola temporal.
             }
         }
-        while (!temp.estaVacia()) {
-            cola.encolar(temp.desencolar());
+        // Devuelve los pacientes de la cola temporal a la cola original.
+        while (!colaTemporal.estaVacia()) {
+            cola.encolar(colaTemporal.desencolar());
         }
-        return localizado;
+        return pacienteEncontrado; // Devuelve el paciente encontrado (o null si no se encontró).
     }
-/**
-     * Meotodo para mostrar las quejas
-     * @Autor: Arauz Arturo
-*/    
-    private void quejasRecibidas(){
-        System.out.println("Quejas en el sistema");
-        if (pilaQuejas.estaVacia()){
-            System.out.println("No hay quejas");
-        }else{
+
+    /**
+     * Muestra todas las quejas que han sido registradas en el sistema.
+     * @author Arauz Arturo
+     */
+    private void quejasRecibidas() {
+        System.out.println("\n--- Quejas Recibidas ---");
+        if (pilaQuejas.estaVacia()) {
+            System.out.println("No hay quejas registradas en el sistema.");
+        } else {
             pilaQuejas.mostrarPila();
         }
-    }  
-}
+    }
 
+    /**
+     * Muestra la bitácora de citas del día, indicando el tiempo de espera
+     * con un distintivo visual (colores).
+     * @author Nahum Ramirez
+     */
+    protected void consultarBitacoraCitasDia() {
+        System.out.println("\n--- Bitacora de Citas del Dia ---");
+        if (bitacoraCitasDia.estaVacia()) {
+            System.out.println("No hay citas registradas en la bitacora del dia.");
+            return;
+        }
+
+        NodoBitacora actual = bitacoraCitasDia.getCabeza();
+        if (actual == null) return; // En caso de que la lista se vacíe inesperadamente.
+
+        do {
+            BitacoraCitaDia cita = actual.getDato();
+            String color = "";
+            if (cita.getTiempoEsperaSegundos() <= 30) {
+                color = "\u001B[32m"; // Verde
+            } else if (cita.getTiempoEsperaSegundos() > 30 && cita.getTiempoEsperaSegundos() < 60) {
+                color = "\u001B[33m"; // Amarillo
+            } else {
+                color = "\u001B[31m"; // Rojo
+            }
+            System.out.println(color + cita + "\u001B[0m"); // Restablecer color
+            actual = actual.getSiguiente();
+        } while (actual != null); // Lista simple, no circular
+    }
+
+    /**
+     * Permite al usuario consultar los expedientes únicos de pacientes,
+     * navegando hacia adelante y hacia atrás.
+     * @param scanner Objeto Scanner para leer la entrada del usuario.
+     * @author Arauz Cerdas Oscar Arturo
+     */
+    protected void consultarExpedienteUnicoPacientes(Scanner scanner) {
+        System.out.println("\n--- Consulta de Expediente unico de Pacientes ---");
+        if (expedientes.estaVacia()) {
+            System.out.println("No hay expedientes de pacientes registrados.");
+            return;
+        }
+
+        NodoExpediente actual = expedientes.getCabeza();
+        String opcion;
+
+        do {
+            System.out.println("\n--- Expediente Actual ---");
+            System.out.println("Cedula: " + actual.getDato().getCedula());
+            System.out.println("Nombre: " + actual.getDato().getNombre());
+            System.out.println("Edad: " + actual.getDato().getEdad());
+            System.out.println("Genero: " + actual.getDato().getGenero());
+
+            System.out.println("\n--- Historico de Citas ---");
+            if (actual.getDato().getHistoricoCitas().estaVacia()) {
+                System.out.println("No hay citas registradas para este paciente.");
+            } else {
+                actual.getDato().getHistoricoCitas().imprimirLista();
+            }
+
+            System.out.println("\n--- Historico de Medicamentos Prescritos ---");
+            if (actual.getDato().getHistoricoMedicamentos().estaVacia()) {
+                System.out.println("No hay medicamentos prescritos para este paciente.");
+            } else {
+                actual.getDato().getHistoricoMedicamentos().imprimirLista();
+            }
+
+            System.out.println("\nNavegacion (N: Siguiente, P: Anterior, S: Salir):");
+            System.out.print("Ingrese su opcion: ");
+            opcion = scanner.nextLine().trim().toUpperCase();
+
+            switch (opcion) {
+                case "N":
+                    actual = actual.getSiguiente();
+                    break;
+                case "P":
+                    actual = actual.getAnterior();
+                    break;
+                case "S":
+                    System.out.println("Saliendo de la consulta de expedientes.");
+                    break;
+                default:
+                    System.out.println("Opción no valida. Por favor, intente de nuevo.");
+                    break;
+            }
+        } while (!opcion.equals("S"));
+    }
+}
