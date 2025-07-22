@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat;
  */
 public class GestionPacientes {
     // Constante para el número de pacientes preferenciales a atender antes de uno regular.
-    private static final int MAX_PREF_ATENDIDOS = 2;
+    private static final int max_pref_atendidos = 2;
 
     // Instancia de la pila para almacenar quejas.
     private QuejasPila pilaQuejas = new QuejasPila();
@@ -125,7 +125,7 @@ public class GestionPacientes {
         String fichaAsignada;
         Paciente nuevoPaciente;
 
-        if (categoria == 1) {
+        if (categoria == 1){
             fichaAsignada = "P" + conta_Prefe++; // Asigna ficha preferencial.
             nuevoPaciente = new Paciente(fechaLlegada, fichaAsignada, nombre, cedula);
             c_Prefe.encolar(nuevoPaciente);
@@ -159,7 +159,7 @@ public class GestionPacientes {
         System.out.println("\n--- Atencion de Pacientes ---");
 
         // Lógica de atención: 2 preferenciales, luego 1 regular.
-        if (!c_Prefe.estaVacia() && pref_Contador < MAX_PREF_ATENDIDOS) {
+        if (!c_Prefe.estaVacia() && pref_Contador < max_pref_atendidos) {
             pacienteAtendido = c_Prefe.desencolar();
             pref_Contador++;
             System.out.println("Atendiendo paciente preferencial.");
@@ -192,7 +192,7 @@ public class GestionPacientes {
                     System.out.print("Ingrese la edad del paciente: ");
                 }
                 edad = scanner.nextInt();
-                scanner.nextLine(); // Limpiar buffer
+                scanner.nextLine(); 
 
                 System.out.print("Ingrese el genero del paciente (Ej. Masculino, Femenino, Otro): ");
                 genero = scanner.nextLine();
@@ -218,17 +218,17 @@ public class GestionPacientes {
             System.out.println("Cita registrada en el historial del paciente.");
 
             // Solicitar y añadir medicamentos prescritos
-            System.out.println("Ingrese los medicamentos prescritos (escriba 'fin' para terminar):");
+            System.out.println("Ingrese los medicamentos prescritos (escriba 'Finalizar' para terminar):");
             String medicamentoInput;
             do {
                 System.out.print("Medicamento: ");
                 medicamentoInput = scanner.nextLine();
-                if (!medicamentoInput.equalsIgnoreCase("fin") && !medicamentoInput.trim().isEmpty()) {
+                if (!medicamentoInput.equalsIgnoreCase("Finalizar") && !medicamentoInput.trim().isEmpty()) {
                     MedicamentoPrescrito nuevoMedicamento = new MedicamentoPrescrito(fechaAtencion, medicamentoInput);
                     expedienteActual.getHistoricoMedicamentos().insertar(nuevoMedicamento);
                     System.out.println("Medicamento '" + medicamentoInput + "' registrado.");
                 }
-            } while (!medicamentoInput.equalsIgnoreCase("fin"));
+            } while (!medicamentoInput.equalsIgnoreCase("Finalizar"));
 
             // Alimentar la bitácora de citas del día
             long tiempoEsperaMillis = fechaAtencion.getTime() - pacienteAtendido.getF_h().getTime();
@@ -374,55 +374,66 @@ public class GestionPacientes {
      * @param scanner Objeto Scanner para leer la entrada del usuario.
      * @author Arauz Cerdas Oscar Arturo
      */
-    protected void consultarExpedienteUnicoPacientes(Scanner scanner) {
-        System.out.println("\n--- Consulta de Expediente unico de Pacientes ---");
-        if (expedientes.estaVacia()) {
-            System.out.println("No hay expedientes de pacientes registrados.");
-            return;
-        }
+protected void consultarExpedienteUnicoPacientes(Scanner scanner) {
+    System.out.println("\n--- Consulta de Expediente unico de Pacientes ---");
+    if (expedientes.estaVacia()) {
+        System.out.println("No hay expedientes de pacientes registrados.");
+        return;
+    }
 
-        NodoExpediente actual = expedientes.getCabeza();
-        String opcion;
+    NodoExpediente actual = expedientes.getCabeza();
+    NodoExpediente inicio = actual; // Guardamos el nodo inicial como referencia
+    String opcion;
+    boolean primeraVez = true;
 
-        do {
+    do {
+        if (!primeraVez) {
             System.out.println("\n--- Expediente Actual ---");
             System.out.println("Cedula: " + actual.getDato().getCedula());
             System.out.println("Nombre: " + actual.getDato().getNombre());
             System.out.println("Edad: " + actual.getDato().getEdad());
             System.out.println("Genero: " + actual.getDato().getGenero());
 
-            System.out.println("\n--- Historico de Citas ---");
+            System.out.println("\n--- Histórico de Citas ---");
             if (actual.getDato().getHistoricoCitas().estaVacia()) {
                 System.out.println("No hay citas registradas para este paciente.");
             } else {
                 actual.getDato().getHistoricoCitas().imprimirLista();
             }
 
-            System.out.println("\n--- Historico de Medicamentos Prescritos ---");
+            System.out.println("\n--- Histórico de Medicamentos Prescritos ---");
             if (actual.getDato().getHistoricoMedicamentos().estaVacia()) {
                 System.out.println("No hay medicamentos prescritos para este paciente.");
             } else {
                 actual.getDato().getHistoricoMedicamentos().imprimirLista();
             }
+        }
+        primeraVez = false;
 
-            System.out.println("\nNavegacion (N: Siguiente, P: Anterior, S: Salir):");
-            System.out.print("Ingrese su opcion: ");
-            opcion = scanner.nextLine().trim().toUpperCase();
+        System.out.println("\nNavegacion (S: Siguiente, A: Anterior, X: Salir):");
+        System.out.print("Ingrese su opcion: ");
+        opcion = scanner.nextLine().trim().toUpperCase();
 
-            switch (opcion) {
-                case "N":
-                    actual = actual.getSiguiente();
-                    break;
-                case "P":
-                    actual = actual.getAnterior();
-                    break;
-                case "S":
-                    System.out.println("Saliendo de la consulta de expedientes.");
-                    break;
-                default:
-                    System.out.println("Opción no valida. Por favor, intente de nuevo.");
-                    break;
-            }
-        } while (!opcion.equals("S"));
-    }
+        switch (opcion) {
+            case "N":
+                actual = actual.getSiguiente();
+                if (actual == inicio) {
+                    System.out.println("Has llegado al final de la lista. Volviendo al primer expediente.");
+                }
+                break;
+            case "P":
+                actual = actual.getAnterior();
+                if (actual == inicio.getAnterior()) {
+                    System.out.println("Has llegado al inicio de la lista. Mostrando último expediente.");
+                }
+                break;
+            case "S":
+                System.out.println("Saliendo de la consulta de expedientes.");
+                break;
+            default:
+                System.out.println("Opcion no valida. Por favor, intente de nuevo.");
+                break;
+        }
+    } while (!opcion.equals("S"));
+}
 }
