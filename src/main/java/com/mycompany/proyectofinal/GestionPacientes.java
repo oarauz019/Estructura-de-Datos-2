@@ -415,25 +415,25 @@ protected void consultarExpedienteUnicoPacientes(Scanner scanner) {
         opcion = scanner.nextLine().trim().toUpperCase();
 
         switch (opcion) {
-            case "N":
+            case "S":
                 actual = actual.getSiguiente();
                 if (actual == inicio) {
                     System.out.println("Has llegado al final de la lista. Volviendo al primer expediente.");
                 }
                 break;
-            case "P":
+            case "A":
                 actual = actual.getAnterior();
                 if (actual == inicio.getAnterior()) {
                     System.out.println("Has llegado al inicio de la lista. Mostrando último expediente.");
                 }
                 break;
-            case "S":
+            case "X":
                 System.out.println("Saliendo de la consulta de expedientes.");
                 break;
             default:
                 System.out.println("Opcion no valida. Por favor, intente de nuevo.");
                 break;
         }
-    } while (!opcion.equals("S"));
+    } while (!opcion.equals("X"));
 }
 }
