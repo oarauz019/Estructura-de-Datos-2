@@ -1,0 +1,154 @@
+@startuml
+skinparam classAttributeIconSize 0
+skinparam packageBorderColor Black
+skinparam packageBackgroundColor #F9F9F9
+skinparam classBackgroundColor #FFFFFF
+
+package "Usuarios" {
+  class Usuario {
+    -nombre: String
+    -cedula: String
+    --
+    +getNombre(): String
+    +getCedula(): String
+  }
+
+  class Paciente {
+    -f_h: Date
+    -ficha: String
+    --
+    +getFicha(): String
+    +getF_h(): Date
+  }
+
+  class Queja {
+    -fecha: Date
+    -comentario: String
+    --
+    +getComentario(): String
+    +getFecha(): Date
+  }
+
+  class Expediente {
+    -edad: int
+    -genero: String
+    -historicoCitas: ListaSimpleCircularCitas
+    -historicoMedicamentos: ListaSimpleCircularMedicamentos
+    --
+    +getEdad(): int
+    +getGenero(): String
+  }
+
+  Paciente --|> Usuario
+  Queja --|> Usuario
+  Expediente --|> Usuario
+}
+
+package "Datos Médicos" {
+  class Cita {
+    -fecha: Date
+    -nombreDoctor: String
+    -diagnostico: String
+  }
+
+  class MedicamentoPrescrito {
+    -fechaPrescripcion: Date
+    -medicamento: String
+  }
+
+  class BitacoraCitaDia {
+    -numeroFicha: String
+    -fechaLlegada: Date
+    -fechaAtencion: Date
+    -cedulaPaciente: String
+    -nombrePaciente: String
+    -tiempoEsperaSegundos: long
+  }
+}
+
+package "Estructuras de Datos" {
+  class Cola {
+    -frente: Nodo
+    -ultimo: Nodo
+    --
+    +encolar(Paciente)
+    +desencolar(): Paciente
+  }
+
+  class QuejasPila {
+    -cima: NodoP
+    --
+    +apilar(Queja)
+    +desapilar(): Queja
+  }
+
+  class ListaDobleCircularExpedientes {
+    -cabeza: NodoExpediente
+    --
+    +insertarOrdenado(Expediente)
+    +buscarPorCedula(String): Expediente
+  }
+
+  class ListaSimpleBitacoraCitas {
+    -cabeza: NodoBitacora
+    --
+    +insertarOrdenado(BitacoraCitaDia)
+  }
+
+  class ListaSimpleCircularCitas {
+    -cabeza: NodoCita
+    --
+    +insertar(Cita)
+  }
+
+  class ListaSimpleCircularMedicamentos {
+    -cabeza: NodoMedicamento
+    --
+    +insertar(MedicamentoPrescrito)
+  }
+}
+
+package "Nodos" {
+  class Nodo {
+    -dato: Paciente
+    -siguiente: Nodo
+  }
+
+  class NodoP {
+    -dato: Queja
+    -siguiente: NodoP
+  }
+
+  class NodoExpediente {
+    -dato: Expediente
+    -siguiente: NodoExpediente
+    -anterior: NodoExpediente
+  }
+
+  class NodoBitacora {
+    -dato: BitacoraCitaDia
+    -siguiente: NodoBitacora
+  }
+
+  class NodoCita {
+    -dato: Cita
+    -siguiente: NodoCita
+  }
+
+  class NodoMedicamento {
+    -dato: MedicamentoPrescrito
+    -siguiente: NodoMedicamento
+  }
+}
+
+Cola --> Nodo
+QuejasPila --> NodoP
+ListaDobleCircularExpedientes --> NodoExpediente
+ListaSimpleBitacoraCitas --> NodoBitacora
+ListaSimpleCircularCitas --> NodoCita
+ListaSimpleCircularMedicamentos --> NodoMedicamento
+
+Expediente --> ListaSimpleCircularCitas
+Expediente --> ListaSimpleCircularMedicamentos
+
+@enduml

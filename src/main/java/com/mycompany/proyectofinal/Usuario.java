@@ -10,16 +10,9 @@ package com.mycompany.proyectofinal;
  * @author Ramirez Fuentes Nahum Esteban
  */
 public class Usuario {
-    // Nombre completo del usuario.
     protected String nombre;
-    // Número de cédula del usuario.
     protected String cedula;
 
-    /**
-     * Constructor de la clase Usuario.
-     * @param nombre El nombre completo del usuario.
-     * @param cedula El número de cédula del usuario.
-     */
     public Usuario(String nombre, String cedula) {
         this.nombre = nombre;
         this.cedula = cedula;
