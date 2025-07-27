@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Implementación de una estructura de datos de Cola (Queue) utilizando nodos.
  * Esta cola sigue el principio FIFO (First-In, First-Out).
- * @author LopezAlex
+ * @author Arauz Cerdas Oscar Arturo
  */
 public class Cola {
     // Nodo que representa el frente de la cola.
@@ -17,68 +17,39 @@ public class Cola {
     // Tamaño actual de la cola.
     private int tamaño;
 
-    /**
-     * Constructor por defecto de la clase Cola.
-     * Inicializa la cola vacía.
-     */
     public Cola() {
         this.frente = null;
         this.ultimo = null;
         this.tamaño = 0;
     }
 
-    /**
-     * Obtiene el tamaño actual de la cola.
-     * @return El número de elementos en la cola.
-     */
+
     public int getTamaño() {
         return tamaño;
     }
 
-    /**
-     * Obtiene el nodo que está en el frente de la cola.
-     * @return El nodo en el frente de la cola.
-     */
+
     public Nodo getFrente() {
         return frente;
     }
 
-    /**
-     * Obtiene el nodo que está en el último de la cola.
-     * @return El nodo en el último de la cola.
-     */
+
     public Nodo getUltimo() {
         return ultimo;
     }
 
-    /**
-     * Establece el tamaño de la cola.
-     * @param tamaño El nuevo tamaño de la cola.
-     */
     public void setTamaño(int tamaño) {
         this.tamaño = tamaño;
     }
 
-    /**
-     * Establece el nodo del frente de la cola.
-     * @param frente El nuevo nodo del frente.
-     */
     public void setFrente(Nodo frente) {
         this.frente = frente;
     }
 
-    /**
-     * Establece el nodo del último de la cola.
-     * @param ultimo El nuevo nodo del último.
-     */
     public void setUltimo(Nodo ultimo) {
         this.ultimo = ultimo;
     }
 
-    /**
-     * Verifica si la cola está vacía.
-     * @return true si la cola no contiene elementos, false en caso contrario.
-     */
     public boolean estaVacia() {
         return frente == null;
     }

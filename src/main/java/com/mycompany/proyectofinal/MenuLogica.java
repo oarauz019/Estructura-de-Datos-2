@@ -9,13 +9,13 @@ import java.util.Scanner;
 /**
  * Esta clase gestiona la lógica del menú principal de la aplicación.
  * Permite al usuario navegar entre las diferentes opciones del sistema.
- * @author Nahum Ramirez
+ * @author Ramirez Fuentes Nahum Esteban
  */
 public class MenuLogica {
     /**
      * Muestra el menú principal de la aplicación y gestiona la selección del usuario.
      * Este método contiene el bucle principal del programa.
-     * @author Nahum Ramirez
+     * @author Ramirez Fuentes Nahum Esteban
      */
     public void menu() {
         GestionPacientes gestionPacientes = new GestionPacientes(); // Instancia para gestionar pacientes.

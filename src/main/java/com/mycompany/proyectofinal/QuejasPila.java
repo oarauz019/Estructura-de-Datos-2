@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Implementación de una estructura de datos de Pila (Stack) utilizando nodos.
  * Esta pila sigue el principio LIFO (Last-In, First-Out).
- * @author Arauz Arturo
+ * @author Sandi Aguero Mario Andres
  */
 public class QuejasPila {
     // Nodo que representa la cima de la pila.

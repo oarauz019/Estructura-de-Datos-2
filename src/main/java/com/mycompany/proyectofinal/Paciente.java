@@ -10,7 +10,7 @@ import java.text.SimpleDateFormat;
 /**
  * Representa un paciente en el sistema, heredando propiedades de Usuario.
  * Contiene información específica de un paciente como fecha/hora de llegada y número de ficha.
- * @author ArauzArturo
+ * @author Arauz Cerdas Oscar Arturo
  */
 public class Paciente extends Usuario {
     // Fecha y hora de llegada del paciente.
@@ -31,34 +31,22 @@ public class Paciente extends Usuario {
         this.ficha = ficha;
     }
 
-    /**
-     * Obtiene la fecha y hora de llegada del paciente.
-     * @return La fecha y hora de llegada.
-     */
+
     public Date getF_h() {
         return f_h;
     }
 
-    /**
-     * Establece la fecha y hora de llegada del paciente.
-     * @param f_h La nueva fecha y hora de llegada.
-     */
+
     public void setF_h(Date f_h) {
         this.f_h = f_h;
     }
 
-    /**
-     * Obtiene el número de ficha del paciente.
-     * @return El número de ficha.
-     */
+
     public String getFicha() {
         return ficha;
     }
 
-    /**
-     * Establece el número de ficha del paciente.
-     * @param ficha El nuevo número de ficha.
-     */
+
     public void setFicha(String ficha) {
         this.ficha = ficha;
     }
@@ -67,7 +55,7 @@ public class Paciente extends Usuario {
      * Proporciona una representación en cadena del objeto Paciente.
      * Incluye el número de ficha, nombre, cédula y fecha/hora de llegada formateada.
      * @return Una cadena que representa al paciente.
-     * @author Arauz Arturo
+     * @author Arauz Cerdas Oscar Arturo
      */
     @Override
     public String toString() {

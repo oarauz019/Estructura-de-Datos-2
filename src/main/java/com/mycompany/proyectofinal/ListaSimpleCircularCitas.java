@@ -6,25 +6,19 @@ package com.mycompany.proyectofinal;
 
 /**
  * Implementación de una lista simple circular para almacenar objetos Cita.
- * @author Gemini
+ * @author Ramirez Fuentes Nahum Esteban
  */
 public class ListaSimpleCircularCitas {
     private NodoCita cabeza;
     private int tamaño;
 
-    /**
-     * Constructor por defecto de la clase ListaSimpleCircularCitas.
-     * Inicializa la lista vacía.
-     */
+
     public ListaSimpleCircularCitas() {
         this.cabeza = null;
         this.tamaño = 0;
     }
 
-    /**
-     * Verifica si la lista está vacía.
-     * @return true si la lista no contiene elementos, false en caso contrario.
-     */
+
     public boolean estaVacia() {
         return cabeza == null;
     }
@@ -66,10 +60,6 @@ public class ListaSimpleCircularCitas {
         } while (actual != cabeza);
     }
 
-    /**
-     * Obtiene el tamaño actual de la lista.
-     * @return El número de elementos en la lista.
-     */
     public int getTamaño() {
         return tamaño;
     }

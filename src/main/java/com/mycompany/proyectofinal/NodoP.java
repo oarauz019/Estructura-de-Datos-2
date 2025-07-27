@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Representa un nodo en una estructura de lista enlazada, específicamente para la Pila de Quejas.
  * Cada nodo contiene un objeto Queja y una referencia al siguiente nodo.
- * @author nahum
+ * @author Ramirez Fuentes Nahum Esteban
  */
 public class NodoP {
     // El dato (Queja) que almacena este nodo.
@@ -25,26 +25,17 @@ public class NodoP {
         this.siguiente = siguiente;
     }
 
-    /**
-     * Obtiene el objeto Queja almacenado en este nodo.
-     * @return El objeto Queja.
-     */
+
     public Queja getDato() {
         return dato;
     }
 
-    /**
-     * Obtiene la referencia al siguiente nodo en la pila.
-     * @return La referencia al siguiente NodoP.
-     */
+
     public NodoP getSiguiente() {
         return siguiente;
     }
 
-    /**
-     * Establece la referencia al siguiente nodo en la pila.
-     * @param siguiente La nueva referencia al siguiente NodoP.
-     */
+
     public void setSiguiente(NodoP siguiente) {
         this.siguiente = siguiente;
     }

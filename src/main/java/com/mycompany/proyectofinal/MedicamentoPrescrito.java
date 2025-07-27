@@ -9,7 +9,7 @@ import java.util.Date;
 
 /**
  * Representa un medicamento prescrito a un paciente en una fecha específica.
- * @author Gemini
+ * @author Arauz Cerdas Oscar Arturo
  */
 public class MedicamentoPrescrito {
     private Date fechaPrescripcion;
@@ -25,42 +25,22 @@ public class MedicamentoPrescrito {
         this.medicamento = medicamento;
     }
 
-    /**
-     * Obtiene la fecha de prescripción del medicamento.
-     * @return La fecha de prescripción.
-     */
     public Date getFechaPrescripcion() {
         return fechaPrescripcion;
     }
 
-    /**
-     * Establece la fecha de prescripción del medicamento.
-     * @param fechaPrescripcion La nueva fecha de prescripción.
-     */
     public void setFechaPrescripcion(Date fechaPrescripcion) {
         this.fechaPrescripcion = fechaPrescripcion;
     }
 
-    /**
-     * Obtiene el nombre del medicamento prescrito.
-     * @return El nombre del medicamento.
-     */
     public String getMedicamento() {
         return medicamento;
     }
 
-    /**
-     * Establece el nombre del medicamento prescrito.
-     * @param medicamento El nuevo nombre del medicamento.
-     */
     public void setMedicamento(String medicamento) {
         this.medicamento = medicamento;
     }
 
-    /**
-     * Proporciona una representación en cadena del objeto MedicamentoPrescrito.
-     * @return Una cadena que representa el medicamento prescrito.
-     */
     @Override
     public String toString() {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");

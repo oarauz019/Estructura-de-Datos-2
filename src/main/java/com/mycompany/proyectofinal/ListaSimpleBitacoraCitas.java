@@ -7,33 +7,24 @@ package com.mycompany.proyectofinal;
 /**
  * Implementación de una lista simple para almacenar objetos BitacoraCitaDia.
  * Los elementos se insertan de forma ordenada por la cédula del paciente.
- * @author Gemini
+ * @author Sandi Aguero Mario Andres
  */
 public class ListaSimpleBitacoraCitas {
     private NodoBitacora cabeza;
     private int tamaño;
 
-    /**
-     * Constructor por defecto de la clase ListaSimpleBitacoraCitas.
-     * Inicializa la lista vacía.
-     */
+
     public ListaSimpleBitacoraCitas() {
         this.cabeza = null;
         this.tamaño = 0;
     }
 
-    /**
-     * Obtiene el primer nodo de la lista.
-     * @return El nodo cabeza de la lista.
-     */
+
     public NodoBitacora getCabeza() {
         return cabeza;
     }
 
-    /**
-     * Verifica si la lista está vacía.
-     * @return true si la lista no contiene elementos, false en caso contrario.
-     */
+
     public boolean estaVacia() {
         return cabeza == null;
     }
@@ -75,10 +66,6 @@ public class ListaSimpleBitacoraCitas {
         }
     }
 
-    /**
-     * Obtiene el tamaño actual de la lista.
-     * @return El número de elementos en la lista.
-     */
     public int getTamaño() {
         return tamaño;
     }

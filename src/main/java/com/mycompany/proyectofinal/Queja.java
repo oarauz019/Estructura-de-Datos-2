@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * Representa una queja en el sistema, heredando propiedades de Usuario.
  * Contiene información específica de una queja como la fecha y el comentario.
- * @author LopezAlex
+ * @author Lopez Lopez Alex Josue
  */
 public class Queja extends Usuario {
     // Fecha en que se registró la queja.
@@ -30,34 +30,20 @@ public class Queja extends Usuario {
         this.comentario = comentario;
     }
 
-    /**
-     * Obtiene la fecha de la queja.
-     * @return La fecha de la queja.
-     */
+
     public Date getFecha() {
         return fecha;
     }
 
-    /**
-     * Establece la fecha de la queja.
-     * @param fecha La nueva fecha de la queja.
-     */
     public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
-    /**
-     * Obtiene el comentario de la queja.
-     * @return El comentario de la queja.
-     */
+
     public String getComentario() {
         return comentario;
     }
 
-    /**
-     * Establece el comentario de la queja.
-     * @param comentario El nuevo comentario de la queja.
-     */
     public void setComentario(String comentario) {
         this.comentario = comentario;
     }

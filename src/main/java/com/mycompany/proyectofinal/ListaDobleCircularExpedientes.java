@@ -7,33 +7,24 @@ package com.mycompany.proyectofinal;
 /**
  * Implementación de una lista doblemente enlazada circular para almacenar objetos Expediente.
  * Los expedientes se mantienen ordenados por la cédula del paciente.
- * @author Gemini
+ * @author Lopez Lopez Alex Josue
  */
 public class ListaDobleCircularExpedientes {
     private NodoExpediente cabeza;
     private int tamaño;
 
-    /**
-     * Constructor por defecto de la clase ListaDobleCircularExpedientes.
-     * Inicializa la lista vacía.
-     */
+
     public ListaDobleCircularExpedientes() {
         this.cabeza = null;
         this.tamaño = 0;
     }
 
-    /**
-     * Obtiene el primer nodo de la lista (cabeza).
-     * @return El nodo cabeza de la lista.
-     */
+
     public NodoExpediente getCabeza() {
         return cabeza;
     }
 
-    /**
-     * Verifica si la lista está vacía.
-     * @return true si la lista no contiene elementos, false en caso contrario.
-     */
+
     public boolean estaVacia() {
         return cabeza == null;
     }
@@ -117,10 +108,6 @@ public class ListaDobleCircularExpedientes {
         } while (actual != cabeza);
     }
 
-    /**
-     * Obtiene el tamaño actual de la lista.
-     * @return El número de elementos en la lista.
-     */
     public int getTamaño() {
         return tamaño;
     }

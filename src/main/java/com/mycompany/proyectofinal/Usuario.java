@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Clase base que representa un usuario genérico en el sistema.
  * Contiene propiedades comunes como nombre y cédula.
- * @author nahum
+ * @author Ramirez Fuentes Nahum Esteban
  */
 public class Usuario {
     // Nombre completo del usuario.
@@ -25,34 +25,22 @@ public class Usuario {
         this.cedula = cedula;
     }
 
-    /**
-     * Obtiene el nombre del usuario.
-     * @return El nombre del usuario.
-     */
+
     public String getNombre() {
         return nombre;
     }
 
-    /**
-     * Establece el nombre del usuario.
-     * @param nombre El nuevo nombre del usuario.
-     */
+
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
 
-    /**
-     * Obtiene la cédula del usuario.
-     * @return La cédula del usuario.
-     */
+
     public String getCedula() {
         return cedula;
     }
 
-    /**
-     * Establece la cédula del usuario.
-     * @param cedula La nueva cédula del usuario.
-     */
+
     public void setCedula(String cedula) {
         this.cedula = cedula;
     }

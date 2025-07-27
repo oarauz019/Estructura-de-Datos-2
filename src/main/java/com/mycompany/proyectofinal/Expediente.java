@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Representa el expediente único de un paciente, heredando de Usuario.
  * Contiene información demográfica y listas internas para el historial de citas y medicamentos.
- * @author Gemini
+ * @author Sandi Aguero Mario Andres
  */
 public class Expediente extends Usuario {
     private int edad;
@@ -30,74 +30,38 @@ public class Expediente extends Usuario {
         this.historicoMedicamentos = new ListaSimpleCircularMedicamentos();
     }
 
-    /**
-     * Obtiene la edad del paciente.
-     * @return La edad del paciente.
-     */
     public int getEdad() {
         return edad;
     }
 
-    /**
-     * Establece la edad del paciente.
-     * @param edad La nueva edad del paciente.
-     */
     public void setEdad(int edad) {
         this.edad = edad;
     }
 
-    /**
-     * Obtiene el género del paciente.
-     * @return El género del paciente.
-     */
     public String getGenero() {
         return genero;
     }
 
-    /**
-     * Establece el género del paciente.
-     * @param genero El nuevo género del paciente.
-     */
     public void setGenero(String genero) {
         this.genero = genero;
     }
 
-    /**
-     * Obtiene la lista del historial de citas del paciente.
-     * @return La lista de citas históricas.
-     */
     public ListaSimpleCircularCitas getHistoricoCitas() {
         return historicoCitas;
     }
 
-    /**
-     * Establece la lista del historial de citas del paciente.
-     * @param historicoCitas La nueva lista de citas históricas.
-     */
     public void setHistoricoCitas(ListaSimpleCircularCitas historicoCitas) {
         this.historicoCitas = historicoCitas;
     }
 
-    /**
-     * Obtiene la lista del historial de medicamentos prescritos del paciente.
-     * @return La lista de medicamentos históricos.
-     */
     public ListaSimpleCircularMedicamentos getHistoricoMedicamentos() {
         return historicoMedicamentos;
     }
 
-    /**
-     * Establece la lista del historial de medicamentos prescritos del paciente.
-     * @param historicoMedicamentos La nueva lista de medicamentos históricos.
-     */
     public void setHistoricoMedicamentos(ListaSimpleCircularMedicamentos historicoMedicamentos) {
         this.historicoMedicamentos = historicoMedicamentos;
     }
 
-    /**
-     * Proporciona una representación en cadena del objeto Expediente.
-     * @return Una cadena que representa el expediente del paciente.
-     */
     @Override
     public String toString() {
         return "Cedula: " + cedula + " | Nombre: " + nombre + " | Edad: " + edad + " | Genero: " + genero;

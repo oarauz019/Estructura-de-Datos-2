@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
  * Esta clase gestiona la llegada, atención y salida de pacientes del centro de salud.
  * Utiliza colas para pacientes regulares y preferenciales, una pila para las quejas,
  * una lista doble circular para expedientes y una lista simple para la bitácora de citas del día.
- * @author MarioSandi
+ * @author Ramirez Fuentes Nahum Esteban
  */
 public class GestionPacientes {
     // Constante para el número de pacientes preferenciales a atender antes de uno regular.
@@ -41,7 +41,7 @@ public class GestionPacientes {
      * Muestra el submenú de atención de pacientes y gestiona las opciones del usuario.
      * Este método contiene el bucle principal para la interacción con el usuario
      * en la sección de gestión de pacientes.
-     * @author MarioSandi
+     * @author Ramirez Fuentes Nahum Esteban
      */
     protected void SubMenuGestionPacientes() {
         Scanner scanner = new Scanner(System.in);
@@ -97,7 +97,7 @@ public class GestionPacientes {
      * Solicita al usuario los datos del paciente y le asigna una ficha según la categoría.
      * El paciente es encolado en la cola correspondiente (preferencial o regular).
      * @param scanner Objeto Scanner para leer la entrada del usuario.
-     * @author Nahum Ramirez
+     * @author Ramirez Fuentes Nahum Esteban
      */
     private void escogerFichaPaciente(Scanner scanner) {
         System.out.println("\n--- Seleccion de Ficha ---");
@@ -150,7 +150,7 @@ public class GestionPacientes {
      * Además, gestiona la creación/actualización del expediente del paciente
      * y la bitácora de citas del día.
      * @param scanner Objeto Scanner para leer la entrada del usuario.
-     * @author Lopez Alex
+     * @author Lopez Lopez Alex Josue
      */
     private void atencionDePacientes(Scanner scanner) {
         Paciente pacienteAtendido = null;
@@ -254,7 +254,7 @@ public class GestionPacientes {
 
     /**
      * Muestra las fichas pendientes en ambas colas (regular y preferencial).
-     * @author Arauz Arturo
+     * @author Arauz Cerdas Oscar Arturo
      */
     private void mostrarFichasPendientes() {
         System.out.println("\n--- Fichas Pendientes ---");
@@ -303,7 +303,7 @@ public class GestionPacientes {
      * @param cola La cola de la cual se intentará eliminar el paciente.
      * @param numeroDeFicha El número de ficha del paciente a eliminar.
      * @return El objeto Paciente eliminado, o null si no se encontró.
-     * @author Lopez Alex
+     * @author Lopez Lopez Alex Josue
      */
     private Paciente eliminarDeCola(Cola cola, String numeroDeFicha) {
         Cola colaTemporal = new Cola(); // Cola temporal para mover los pacientes no coincidentes.
@@ -327,7 +327,7 @@ public class GestionPacientes {
 
     /**
      * Muestra todas las quejas que han sido registradas en el sistema.
-     * @author Arauz Arturo
+     * @author Arauz Cerdas Oscar Arturo
      */
     private void quejasRecibidas() {
         System.out.println("\n--- Quejas Recibidas ---");
@@ -341,7 +341,7 @@ public class GestionPacientes {
     /**
      * Muestra la bitácora de citas del día, indicando el tiempo de espera
      * con un distintivo visual (colores).
-     * @author Nahum Ramirez
+     * @author Ramirez Fuentes Nahum Esteban
      */
     protected void consultarBitacoraCitasDia() {
         System.out.println("\n--- Bitacora de Citas del Dia ---");

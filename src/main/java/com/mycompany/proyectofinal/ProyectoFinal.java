@@ -7,7 +7,7 @@ package com.mycompany.proyectofinal;
 /**
  * Clase principal que inicia la aplicación de gestión de pacientes.
  * Este es el punto de entrada del programa.
- * @author ArazuLopez
+ * @author Lopez Lopez Alex Josue
  */
 public class ProyectoFinal {
 
