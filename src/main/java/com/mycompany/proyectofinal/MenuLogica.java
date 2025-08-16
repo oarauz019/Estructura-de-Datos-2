@@ -18,7 +18,9 @@ public class MenuLogica {
      * @author Ramirez Fuentes Nahum Esteban
      */
     public void menu() {
-        GestionPacientes gestionPacientes = new GestionPacientes(); // Instancia para gestionar pacientes.
+        // Instancia para gestionar pacientes y el nuevo chatbot.
+        GestionPacientes gestionPacientes = new GestionPacientes();
+        ChatbotLogica chatbot = new ChatbotLogica();
         Scanner scanner = new Scanner(System.in); // Scanner para leer la entrada del usuario.
 
         int opcion;
@@ -28,8 +30,9 @@ public class MenuLogica {
             System.out.println("1. Gestion de Pacientes");
             System.out.println("2. Consulta de Bitacora de Citas del Dia");
             System.out.println("3. Consulta de Expediente unico de Pacientes");
-            System.out.println("4. Ayuda e Informacion");
-            System.out.println("5. Salir del Programa");
+            System.out.println("4. Chat Bot de atencion de consultas"); // Nueva opción del chatbot
+            System.out.println("5. Ayuda e Informacion");
+            System.out.println("6. Salir del Programa");
             System.out.print("Seleccione una opcion: ");
 
             // Valida que la entrada sea un número entero.
@@ -56,22 +59,26 @@ public class MenuLogica {
                     gestionPacientes.consultarExpedienteUnicoPacientes(scanner);
                     break;
                 case 4:
+                    System.out.println("Accediendo al Chatbot...");
+                    chatbot.mostrarMenuChatbot(); // Llama al menú del chatbot.
+                    break;
+                case 5:
                     System.out.println("\n--- Ayuda e Informacion ---");
-                    System.out.println("*** Version del Sistema: 2.0.0 (Avance 2) ***"); // Versión actualizada
+                    System.out.println("*** Versión del Sistema: 3.0.0 (Presentación Final) ***"); // Versión actualizada
                     System.out.println("Desarrollado por:");
                     System.out.println("-> Ramirez Fuentes Nahum Esteban");
                     System.out.println("-> Lopez Lopez Alex Josue");
                     System.out.println("-> Arauz Cerdas Oscar Arturo");
                     System.out.println("-> Sandi Aguero Mario Andres");
                     break;
-                case 5:
-                    System.out.println("Saliendo del programa. ¡Gracias por su visita!");
+                case 6:
+                    System.out.println("Saliendo del programa. Gracias por su visita!");
                     break; // Sale del bucle do-while.
                 default:
                     System.out.println("Opcion no valida. Por favor, intente nuevamente.");
                     break;
             }
-        } while (opcion != 5); // Cambiado a 5 para salir.
+        } while (opcion != 6); // Cambiado a 6 para salir.
 
         scanner.close(); // Cierra el scanner al finalizar el programa.
     }
